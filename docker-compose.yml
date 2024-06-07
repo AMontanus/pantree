@@ -1,0 +1,17 @@
+﻿services:
+  pantree:
+    image: pantree
+    build:
+      context: .
+      dockerfile: PanTree/Dockerfile
+  https-portal:
+    image: steveltn/https-portal
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+        - pantree
+    restart: always
+    environment:
+      DOMAINS: 'api.andreasberg.dev -> http://localhost:8080'
+      STAGE: 'production'
