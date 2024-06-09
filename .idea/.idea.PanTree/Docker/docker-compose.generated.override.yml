@@ -1,0 +1,35 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  pantree:
+    build:
+      context: "/home/andreasberg/src/PanTree"
+      dockerfile: "PanTree/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "pantree:dev"
+    ports:
+    - "127.0.0.1:57000:57100"
+    - "127.0.0.1:57200:57300"
+    volumes:
+    - "/home/andreasberg/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/andreasberg/src/PanTree/PanTree:/app:rw"
+    - "/home/andreasberg/src/PanTree:/src:rw"
+    - "/home/andreasberg/.local/share/JetBrains/RiderRemoteDebugger/2024.1.1/Linux64:/opt/rider-debugger"
+    - "/home/andreasberg/.local/share/JetBrains/Toolbox/apps/rider/bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "/home/andreasberg/.cache/JetBrains/Rider2024.1/log/DebuggerWorker/JetBrains.Debugger.Worker.2024_6_07_21_03_30:/var/opt/rider-debugger:rw"
+    working_dir: "/app"
